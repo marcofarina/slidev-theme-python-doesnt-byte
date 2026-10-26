@@ -1,1 +1,231 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Layout di contenuto (fase 2): code, two-columns, definition, quote, fact, figure.
+   Cornice, footer, kicker e `.at-content` stanno in frame.css (fase 1). Il blocco di codice
+   (colori, bordi, passi) è della fase 3 (code.css): qui il codice ha solo il suo spazio.
+   Solo variabili di styles/tokens.css, mai valori grezzi. */
+
+/* ── Titolo di slide: stesso stile di `default` ───────────────── */
+.at-frame:is(.code, .two-columns, .figure) h1 {
+  font-family: var(--type-slide-title-family);
+  font-size: var(--type-slide-title-size);
+  line-height: var(--type-slide-title-line);
+  font-weight: var(--type-slide-title-weight);
+  letter-spacing: var(--type-slide-title-tracking);
+  color: var(--ink-strong);
+}
+
+.at-frame:is(.code, .two-columns, .figure, .definition, .quote, .fact) strong {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+.at-frame:is(.code, .two-columns) > .at-frame__body > .at-kicker {
+  margin-bottom: var(--space-2);
+}
+
+/* ── code: un blocco di codice che riempie la slide ───────────── */
+.at-frame.code .at-content {
+  min-height: 0;
+}
+
+/* ── two-columns: affermazione a sinistra, prova a destra ─────── */
+.at-cols {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  gap: var(--space-12);
+  align-items: start;
+}
+
+.at-cols--1-3 { grid-template-columns: 1fr 3fr; }
+.at-cols--2-2 { grid-template-columns: 1fr 1fr; }
+.at-cols--3-1 { grid-template-columns: 3fr 1fr; }
+.at-cols--2-3 { grid-template-columns: 2fr 3fr; }
+
+.at-cols__left,
+.at-cols__right {
+  min-width: 0;
+}
+
+.at-cols__left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  font-weight: var(--type-body-weight);
+  color: var(--ink-body);
+}
+
+.at-cols__left ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.at-cols__left ul > li {
+  position: relative;
+  padding-left: var(--space-8);
+}
+
+.at-cols__left ul > li::before {
+  content: '';
+  position: absolute;
+  left: var(--space-2);
+  top: 13px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--vol);
+}
+
+/* ── definition: un termine e la sua definizione ──────────────── */
+.at-definition__inner {
+  max-width: 760px;
+  gap: var(--space-5);
+}
+
+.at-frame.definition h1 {
+  font-family: var(--type-section-title-family);
+  font-size: var(--type-section-title-size);
+  line-height: var(--type-section-title-line);
+  font-weight: var(--type-section-title-weight);
+  letter-spacing: var(--type-section-title-tracking);
+  color: var(--ink-strong);
+}
+
+/* Filetto di 64 × 4 px nel colore del volume, sotto il termine */
+.at-frame.definition h1::after {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 4px;
+  margin-top: var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--vol);
+}
+
+.at-frame.definition p:not(.at-kicker) {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-line);
+  font-weight: var(--type-lead-weight);
+  color: var(--ink);
+}
+
+/* Esempio: il secondo paragrafo, a misura di corpo */
+.at-frame.definition p:not(.at-kicker) ~ p {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  color: var(--ink-body);
+}
+
+/* ── quote: un'epigrafe o una citazione ───────────────────────── */
+.at-quote {
+  position: relative;
+  max-width: 760px;
+  margin: 0;
+  font-family: var(--type-quote-family);
+  font-size: var(--type-quote-size);
+  line-height: var(--type-quote-line);
+  font-weight: var(--type-quote-weight);
+  font-style: var(--type-quote-style);
+  color: var(--ink);
+}
+
+/* La citazione scritta come `> testo` mette un blockquote dentro il blockquote */
+.at-quote blockquote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.at-quote__mark {
+  display: block;
+  height: calc(var(--space-10) + var(--space-6));
+  font-family: var(--type-fact-family);
+  font-size: calc(var(--type-fact-size) * 1.25);
+  line-height: calc(var(--type-fact-size) * 1.25);
+  font-style: normal;
+  color: var(--vol);
+}
+
+.at-frame.quote .at-caption {
+  margin-top: var(--space-6);
+}
+
+/* Didascalia: usata dall'autore della citazione e dalla figura */
+.at-caption {
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: var(--type-caption-weight);
+  font-style: var(--type-caption-style);
+  color: var(--ink-muted);
+}
+
+.at-caption p {
+  display: inline;
+}
+
+/* ── fact: un numero grande e una riga che lo spiega ──────────── */
+.at-fact__inner {
+  gap: var(--space-3);
+}
+
+.at-frame.fact h1 {
+  font-family: var(--type-fact-family);
+  font-size: var(--type-fact-size);
+  line-height: var(--type-fact-line);
+  font-weight: var(--type-fact-weight);
+  letter-spacing: var(--type-fact-tracking);
+  color: var(--ink-strong);
+}
+
+.at-fact__source {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-line);
+  font-weight: var(--type-lead-weight);
+  color: var(--ink-muted-soft);
+}
+
+/* ── figure: immagine o SVG in una cornice, con didascalia ────── */
+.at-figure {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.at-figure__frame {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-card);
+}
+
+/* Il paragrafo che Markdown mette attorno a un'immagine non deve contare */
+.at-figure__frame > p {
+  display: contents;
+}
+
+.at-figure__frame img,
+.at-figure__frame svg {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
