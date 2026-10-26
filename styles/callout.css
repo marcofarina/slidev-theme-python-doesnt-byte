@@ -1,1 +1,184 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Callout e tooltip del glossario (fase 4). Solo variabili di styles/tokens.css, mai valori
+   grezzi. Callout: fondo colorato e nient'altro, senza bordo a sinistra né ombra, come sul sito. */
+
+/* ── Callout ───────────────────────────────────────────────────── */
+.at-callout {
+  --callout-bg: var(--callout-note-bg);
+  --callout-fg: var(--callout-note-fg);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-sm);
+  background: var(--callout-bg);
+  color: var(--ink-body);
+  font-family: var(--type-callout-body-family);
+  font-size: var(--type-callout-body-size);
+  line-height: var(--type-callout-body-line);
+  font-weight: var(--type-callout-body-weight);
+}
+
+.at-callout--prereq {
+  --callout-bg: var(--callout-prereq-bg);
+  --callout-fg: var(--callout-prereq-fg);
+}
+.at-callout--learn {
+  --callout-bg: var(--callout-learn-bg);
+  --callout-fg: var(--callout-learn-fg);
+}
+.at-callout--exercise {
+  --callout-bg: var(--callout-exercise-bg);
+  --callout-fg: var(--callout-exercise-fg);
+}
+.at-callout--definition {
+  --callout-bg: var(--callout-definition-bg);
+  --callout-fg: var(--callout-definition-fg);
+}
+.at-callout--history {
+  --callout-bg: var(--callout-history-bg);
+  --callout-fg: var(--callout-history-fg);
+}
+.at-callout--code {
+  --callout-bg: var(--callout-code-bg);
+  --callout-fg: var(--callout-code-fg);
+}
+.at-callout--cleancode {
+  --callout-bg: var(--callout-cleancode-bg);
+  --callout-fg: var(--callout-cleancode-fg);
+}
+.at-callout--nutshell {
+  --callout-bg: var(--callout-nutshell-bg);
+  --callout-fg: var(--callout-nutshell-fg);
+}
+.at-callout--mindmap {
+  --callout-bg: var(--callout-mindmap-bg);
+  --callout-fg: var(--callout-mindmap-fg);
+}
+.at-callout--info {
+  --callout-bg: var(--callout-info-bg);
+  --callout-fg: var(--callout-info-fg);
+}
+.at-callout--tip {
+  --callout-bg: var(--callout-tip-bg);
+  --callout-fg: var(--callout-tip-fg);
+}
+.at-callout--warning {
+  --callout-bg: var(--callout-warning-bg);
+  --callout-fg: var(--callout-warning-fg);
+}
+.at-callout--danger {
+  --callout-bg: var(--callout-danger-bg);
+  --callout-fg: var(--callout-danger-fg);
+}
+.at-callout--note {
+  --callout-bg: var(--callout-note-bg);
+  --callout-fg: var(--callout-note-fg);
+}
+
+.at-callout__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.at-callout__icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.at-callout .at-callout__title {
+  margin: 0;
+  font-family: var(--type-callout-title-family);
+  font-size: var(--type-callout-title-size);
+  line-height: var(--type-callout-title-line);
+  font-weight: var(--type-callout-title-weight);
+  color: var(--callout-fg);
+}
+
+.at-callout__body > :first-child {
+  margin-top: 0;
+}
+
+.at-callout__body > :last-child {
+  margin-bottom: 0;
+}
+
+.at-callout__body p {
+  margin: 0;
+}
+
+.at-callout__body p + p {
+  margin-top: var(--space-2);
+}
+
+.at-callout__body strong {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+/* ── Tooltip del glossario ─────────────────────────────────────── */
+.at-tooltip {
+  position: relative;
+  text-decoration: underline dotted;
+  text-decoration-color: var(--vol, var(--accent));
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  cursor: help;
+}
+
+.at-tooltip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+.at-tooltip__box {
+  --shift: 0px;
+  position: absolute;
+  z-index: 10;
+  left: 50%;
+  bottom: calc(100% + var(--space-2));
+  width: max-content;
+  max-width: 420px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--border-strong), var(--shadow-elevated);
+  color: var(--ink);
+  font-family: var(--type-caption-family);
+  font-size: var(--type-caption-size);
+  line-height: var(--type-caption-line);
+  font-weight: var(--type-caption-weight);
+  font-style: var(--type-caption-style);
+  text-align: left;
+  text-decoration: none;
+  transform: translateX(calc(-50% + var(--shift)));
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur-normal) var(--ease-out), visibility var(--dur-normal);
+}
+
+.at-tooltip__box.is-below {
+  bottom: auto;
+  top: calc(100% + var(--space-2));
+}
+
+.at-tooltip:hover > .at-tooltip__box,
+.at-tooltip:focus > .at-tooltip__box {
+  opacity: 1;
+  visibility: visible;
+}
+
+.at-tooltip__box strong {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .at-tooltip__box {
+    transition: none;
+  }
+}
