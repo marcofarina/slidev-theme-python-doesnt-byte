@@ -1,0 +1,29 @@
+/* Base comune a tutte le slide: fondo, colore e tipo del corpo.
+   Solo variabili di styles/tokens.css, mai valori grezzi. */
+
+.slidev-slide-content {
+  background: var(--surface);
+}
+
+.slidev-layout {
+  box-sizing: border-box;
+  height: 100%;
+  padding: var(--space-10) var(--space-14) 0;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  font-weight: var(--type-body-weight);
+}
+
+/* Monaspace: ligature spente, texture healing (calt) accesa, mai corsivo. */
+.slidev-layout code,
+.slidev-layout pre,
+.slidev-layout kbd,
+.slidev-layout samp {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-variant-ligatures: no-common-ligatures contextual;
+  font-feature-settings: 'liga' 0, 'calt' 1;
+}

@@ -1,0 +1,326 @@
+/* Generato da scripts/build-tokens.mjs a partire da tokens/tokens.json.
+   Non modificare a mano: correggi i token e rilancia `npm run tokens`. */
+
+/* Tema chiaro (predefinito) */
+:root,
+html:not(.dark) {
+  --surface: #fafaf9;
+  --surface-raised: #ffffff;
+  --surface-chip: rgba(0, 0, 0, 0.04);
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.12);
+  --ink-strong: #09090b;
+  --ink: #27272a;
+  --ink-body: #3f3f46;
+  --ink-muted: #6b6b73;
+  --ink-muted-soft: #52525b;
+  --ink-faint: #a1a1aa;
+  --accent: #0270ad;
+  --accent-soft: #0369a1;
+  --accent-tint: rgba(2, 132, 199, 0.08);
+  --accent-tint-border: rgba(2, 132, 199, 0.2);
+  --on-accent: #ffffff;
+  --grad-1: #0284c7;
+  --grad-2: #6366f1;
+  --grad-3: #a855f7;
+  --vol-programmatore: #1d68e1;
+  --vol-programmatore-ink: #0369a1;
+  --vol-programmatore-tint: rgba(29, 104, 225, 0.08);
+  --vol-programmatore-beam-1: #0891b2;
+  --vol-programmatore-beam-2: #2563eb;
+  --vol-programmatore-beam-3: #7c3aed;
+  --vol-artefice: #d946a0;
+  --vol-artefice-ink: #a21caf;
+  --vol-artefice-tint: rgba(217, 70, 160, 0.08);
+  --vol-artefice-beam-1: #db2777;
+  --vol-artefice-beam-2: #7c3aed;
+  --vol-artefice-beam-3: #4f46e5;
+  --vol-archivista: #d97706;
+  --vol-archivista-ink: #b45309;
+  --vol-archivista-tint: rgba(217, 119, 6, 0.05);
+  --vol-archivista-beam-1: #f59e0b;
+  --vol-archivista-beam-2: #fb923c;
+  --vol-archivista-beam-3: #ef4444;
+  --vol-apprendista: #16a34a;
+  --vol-apprendista-ink: #15803d;
+  --vol-apprendista-tint: rgba(22, 163, 74, 0.05);
+  --vol-apprendista-beam-1: #10b981;
+  --vol-apprendista-beam-2: #14b8a6;
+  --vol-apprendista-beam-3: #06b6d4;
+  --code-bg: #f6f8fa;
+  --code-fg: #393a34;
+  --code-keyword: #00009f;
+  --code-string: #c40d5e;
+  --code-number: #1b7a78;
+  --code-comment: #776655;
+  --callout-prereq-bg: oklch(96% 0.025 240);
+  --callout-prereq-fg: oklch(48% 0.16 240);
+  --callout-learn-bg: oklch(96% 0.025 350);
+  --callout-learn-fg: oklch(52% 0.18 350);
+  --callout-exercise-bg: oklch(95% 0.03 320);
+  --callout-exercise-fg: oklch(52% 0.2 320);
+  --callout-definition-bg: oklch(95% 0.04 70);
+  --callout-definition-fg: oklch(48% 0.13 70);
+  --callout-history-bg: oklch(94% 0.045 35);
+  --callout-history-fg: oklch(48% 0.16 35);
+  --callout-code-bg: oklch(95% 0 0);
+  --callout-code-fg: oklch(40% 0 0);
+  --callout-cleancode-bg: oklch(95% 0.025 270);
+  --callout-cleancode-fg: oklch(48% 0.18 270);
+  --callout-nutshell-bg: oklch(95% 0.03 55);
+  --callout-nutshell-fg: oklch(46% 0.09 55);
+  --callout-mindmap-bg: oklch(95% 0.04 175);
+  --callout-mindmap-fg: oklch(46% 0.13 175);
+  --callout-info-bg: oklch(95% 0.04 145);
+  --callout-info-fg: oklch(46% 0.14 145);
+  --callout-tip-bg: oklch(96% 0.05 90);
+  --callout-tip-fg: oklch(52% 0.15 85);
+  --callout-warning-bg: oklch(94% 0.05 55);
+  --callout-warning-fg: oklch(56% 0.17 50);
+  --callout-danger-bg: oklch(93% 0.04 15);
+  --callout-danger-fg: oklch(48% 0.22 18);
+  --callout-note-bg: oklch(95% 0 0);
+  --callout-note-fg: oklch(45% 0 0);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.02), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 4px 8px rgba(0, 0, 0, 0.02), 0 8px 12px rgba(0, 0, 0, 0.02), 0 2px 4px rgba(0, 0, 0, 0.04), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+}
+
+/* Tema scuro: Slidev mette la classe `dark` su <html> */
+html.dark {
+  --surface: #09090b;
+  --surface-raised: #18181b;
+  --surface-chip: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --ink-strong: #fafafa;
+  --ink: #e4e4e7;
+  --ink-body: #d4d4d8;
+  --ink-muted: #8b8b93;
+  --ink-muted-soft: #a1a1aa;
+  --ink-faint: #52525b;
+  --accent: #38bdf8;
+  --accent-soft: #7dd3fc;
+  --accent-tint: rgba(56, 189, 248, 0.1);
+  --accent-tint-border: rgba(56, 189, 248, 0.2);
+  --on-accent: #09090b;
+  --grad-1: #38bdf8;
+  --grad-2: #818cf8;
+  --grad-3: #c084fc;
+  --vol-programmatore: #75a3ed;
+  --vol-programmatore-ink: #75a3ed;
+  --vol-programmatore-tint: rgba(117, 163, 237, 0.14);
+  --vol-programmatore-beam-1: #06b6d4;
+  --vol-programmatore-beam-2: #3b82f6;
+  --vol-programmatore-beam-3: #8b5cf6;
+  --vol-artefice: #f0a8d4;
+  --vol-artefice-ink: #f0a8d4;
+  --vol-artefice-tint: rgba(240, 168, 212, 0.14);
+  --vol-artefice-beam-1: #ec4899;
+  --vol-artefice-beam-2: #8b5cf6;
+  --vol-artefice-beam-3: #6366f1;
+  --vol-archivista: #f5b860;
+  --vol-archivista-ink: #f5b860;
+  --vol-archivista-tint: rgba(245, 184, 96, 0.14);
+  --vol-archivista-beam-1: #f59e0b;
+  --vol-archivista-beam-2: #fb923c;
+  --vol-archivista-beam-3: #ef4444;
+  --vol-apprendista: #6ed699;
+  --vol-apprendista-ink: #6ed699;
+  --vol-apprendista-tint: rgba(110, 214, 153, 0.14);
+  --vol-apprendista-beam-1: #10b981;
+  --vol-apprendista-beam-2: #14b8a6;
+  --vol-apprendista-beam-3: #06b6d4;
+  --code-bg: #282a36;
+  --code-fg: #f8f8f2;
+  --code-keyword: #bd93f9;
+  --code-string: #ff79c6;
+  --code-number: #bd93f9;
+  --code-comment: #8592c0;
+  --callout-prereq-bg: oklch(26% 0.04 245);
+  --callout-prereq-fg: oklch(78% 0.12 240);
+  --callout-learn-bg: oklch(27% 0.05 350);
+  --callout-learn-fg: oklch(82% 0.11 350);
+  --callout-exercise-bg: oklch(26% 0.06 320);
+  --callout-exercise-fg: oklch(80% 0.14 320);
+  --callout-definition-bg: oklch(26% 0.045 70);
+  --callout-definition-fg: oklch(82% 0.1 70);
+  --callout-history-bg: oklch(26% 0.06 35);
+  --callout-history-fg: oklch(78% 0.13 35);
+  --callout-code-bg: oklch(28% 0 0);
+  --callout-code-fg: oklch(82% 0 0);
+  --callout-cleancode-bg: oklch(26% 0.05 270);
+  --callout-cleancode-fg: oklch(80% 0.13 270);
+  --callout-nutshell-bg: oklch(26% 0.035 55);
+  --callout-nutshell-fg: oklch(80% 0.07 55);
+  --callout-mindmap-bg: oklch(26% 0.05 175);
+  --callout-mindmap-fg: oklch(80% 0.12 175);
+  --callout-info-bg: oklch(26% 0.05 145);
+  --callout-info-fg: oklch(82% 0.13 145);
+  --callout-tip-bg: oklch(27% 0.05 90);
+  --callout-tip-fg: oklch(85% 0.13 90);
+  --callout-warning-bg: oklch(27% 0.08 55);
+  --callout-warning-fg: oklch(82% 0.15 50);
+  --callout-danger-bg: oklch(28% 0.08 15);
+  --callout-danger-fg: oklch(78% 0.18 18);
+  --callout-note-bg: oklch(26% 0 0);
+  --callout-note-fg: oklch(78% 0 0);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+  --shadow-elevated: 0 8px 24px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 0 0.5px rgba(255, 255, 255, 0.08);
+  --glow-opacity: 1;
+}
+
+/* Valori uguali nei due temi */
+:root {
+  --focus-ring: var(--accent);
+  --code-line-highlight: var(--accent-tint);
+  --answer-correct: var(--callout-mindmap-fg);
+  --answer-correct-bg: var(--callout-mindmap-bg);
+  --answer-wrong: var(--callout-danger-fg);
+  --answer-wrong-bg: var(--callout-danger-bg);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-14: 56px;
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+  --slide-width: 980px;
+  --slide-height: 552px;
+  --footer-height: 32px;
+  --logo-footer: 20px;
+  --logo-cover: 72px;
+  --dim-lines: 0.45;
+  --glow-opacity: 0.55;
+  --font-display: "Crimson Pro", "Iowan Old Style", "Source Serif 4", Georgia, serif;
+  --font-body: "Crimson Pro", "Iowan Old Style", "Source Serif 4", Georgia, serif;
+  --font-mono: "Monaspace Neon", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono-ui: "Monaspace Argon", "Monaspace Neon", ui-monospace, monospace;
+  --font-mono-comment: "Monaspace Radon", "Monaspace Neon", ui-monospace, monospace;
+  --type-display-family: var(--font-display);
+  --type-display-size: 64px;
+  --type-display-line: 64px;
+  --type-display-weight: 700;
+  --type-display-tracking: -0.02em;
+  --type-section-title-family: var(--font-display);
+  --type-section-title-size: 52px;
+  --type-section-title-line: 56px;
+  --type-section-title-weight: 700;
+  --type-section-title-tracking: -0.02em;
+  --type-fact-family: var(--font-display);
+  --type-fact-size: 96px;
+  --type-fact-line: 96px;
+  --type-fact-weight: 700;
+  --type-fact-tracking: -0.03em;
+  --type-slide-title-family: var(--font-display);
+  --type-slide-title-size: 40px;
+  --type-slide-title-line: 44px;
+  --type-slide-title-weight: 700;
+  --type-slide-title-tracking: -0.01em;
+  --type-quote-family: var(--font-display);
+  --type-quote-size: 34px;
+  --type-quote-line: 44px;
+  --type-quote-weight: 400;
+  --type-quote-style: italic;
+  --type-lead-family: var(--font-display);
+  --type-lead-size: 28px;
+  --type-lead-line: 36px;
+  --type-lead-weight: 400;
+  --type-body-family: var(--font-body);
+  --type-body-size: 24px;
+  --type-body-line: 32px;
+  --type-body-weight: 400;
+  --type-callout-title-family: var(--font-body);
+  --type-callout-title-size: 26px;
+  --type-callout-title-line: 28px;
+  --type-callout-title-weight: 700;
+  --type-callout-body-family: var(--font-body);
+  --type-callout-body-size: 22px;
+  --type-callout-body-line: 30px;
+  --type-callout-body-weight: 400;
+  --type-caption-family: var(--font-body);
+  --type-caption-size: 18px;
+  --type-caption-line: 24px;
+  --type-caption-weight: 400;
+  --type-caption-style: italic;
+  --type-code-family: var(--font-mono);
+  --type-code-size: 20px;
+  --type-code-line: 30px;
+  --type-code-weight: 400;
+  --type-code-inline-family: var(--font-mono);
+  --type-code-inline-size: 0.88em;
+  --type-code-inline-line: 1;
+  --type-code-inline-weight: 400;
+  --type-code-comment-family: var(--font-mono-comment);
+  --type-code-comment-size: 20px;
+  --type-code-comment-line: 30px;
+  --type-code-comment-weight: 400;
+  --type-kicker-family: var(--font-mono-ui);
+  --type-kicker-size: 14px;
+  --type-kicker-line: 20px;
+  --type-kicker-weight: 500;
+  --type-kicker-tracking: 0.16em;
+  --type-chrome-family: var(--font-mono-ui);
+  --type-chrome-size: 13px;
+  --type-chrome-line: 16px;
+  --type-chrome-weight: 400;
+  --type-chrome-tracking: 0.04em;
+  --type-button-family: var(--font-mono-ui);
+  --type-button-size: 15px;
+  --type-button-line: 20px;
+  --type-button-weight: 500;
+}
+
+/* Volume: si attiva con data-volume="<chiave>" su un antenato */
+:root {
+  --vol: var(--accent);
+  --vol-ink: var(--accent);
+  --vol-tint: var(--accent-tint);
+  --beam-1: var(--grad-1);
+  --beam-2: var(--grad-2);
+  --beam-3: var(--grad-3);
+}
+
+[data-volume='programmatore'] {
+  --vol: var(--vol-programmatore);
+  --vol-ink: var(--vol-programmatore-ink);
+  --vol-tint: var(--vol-programmatore-tint);
+  --beam-1: var(--vol-programmatore-beam-1);
+  --beam-2: var(--vol-programmatore-beam-2);
+  --beam-3: var(--vol-programmatore-beam-3);
+}
+
+[data-volume='artefice'] {
+  --vol: var(--vol-artefice);
+  --vol-ink: var(--vol-artefice-ink);
+  --vol-tint: var(--vol-artefice-tint);
+  --beam-1: var(--vol-artefice-beam-1);
+  --beam-2: var(--vol-artefice-beam-2);
+  --beam-3: var(--vol-artefice-beam-3);
+}
+
+[data-volume='archivista'] {
+  --vol: var(--vol-archivista);
+  --vol-ink: var(--vol-archivista-ink);
+  --vol-tint: var(--vol-archivista-tint);
+  --beam-1: var(--vol-archivista-beam-1);
+  --beam-2: var(--vol-archivista-beam-2);
+  --beam-3: var(--vol-archivista-beam-3);
+}
+
+[data-volume='apprendista'] {
+  --vol: var(--vol-apprendista);
+  --vol-ink: var(--vol-apprendista-ink);
+  --vol-tint: var(--vol-apprendista-tint);
+  --beam-1: var(--vol-apprendista-beam-1);
+  --beam-2: var(--vol-apprendista-beam-2);
+  --beam-3: var(--vol-apprendista-beam-3);
+}

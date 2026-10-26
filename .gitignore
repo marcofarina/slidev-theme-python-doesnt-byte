@@ -21,3 +21,7 @@ AGENTS.md
 
 # Piani di lavoro locali
 pm/
+
+# Esportazioni locali di npm run snap
+snapshots/
+example.dark.md
