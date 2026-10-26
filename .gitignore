@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# Node / Slidev
+node_modules/
+dist/
+*.local
+.vite-inspect
+.remote-assets
+components.d.ts
+
+# IDE
+.idea/
+.vscode/
+
+# Claude Code: contesto locale, non committato (convenzione dei progetti di Marco)
+CLAUDE.md
+CLAUDE.local.md
+.claude/
+AGENTS.md
+
+# Piani di lavoro locali
+pm/
