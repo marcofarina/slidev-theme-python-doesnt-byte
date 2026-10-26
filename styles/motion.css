@@ -1,1 +1,19 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Movimento (fase 1). Niente transizioni tra slide (`transition: none`): il footer è una
+   cornice fissa. Dentro la slide le rivelazioni di `v-click` sono una dissolvenza di 200 ms. */
+
+:root {
+  --dur-normal: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slidev-vclick-target,
+.slidev-vclick-target.slidev-vclick-anim-fade-in {
+  transition: opacity var(--dur-normal) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slidev-vclick-target,
+  .slidev-vclick-target.slidev-vclick-anim-fade-in {
+    transition: none;
+  }
+}

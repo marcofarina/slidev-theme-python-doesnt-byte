@@ -1,1 +1,390 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Cornice e layout di apertura e chiusura (fase 1).
+   Porta le regole `.at-*` di bundle.css dell'artifact Atmospheric: solo variabili di
+   styles/tokens.css. Il volume arriva da `data-volume` sulla radice della slide. */
+
+/* ── Radice della slide ───────────────────────────────────────── */
+.at-frame {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.at-frame *,
+.at-frame *::before,
+.at-frame *::after {
+  box-sizing: border-box;
+}
+
+.at-frame h1,
+.at-frame h2,
+.at-frame p,
+.at-frame ul,
+.at-frame ol,
+.at-frame figure,
+.at-frame blockquote {
+  margin: 0;
+}
+
+.at-frame__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Cover ed end non hanno footer: il margine inferiore lo dà il padding */
+.at-frame--bare {
+  padding-bottom: var(--space-10);
+}
+
+/* ── Bagliore: solo cover, section ed end ─────────────────────── */
+.at-glow::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 45% 55% at 78% 38%, color-mix(in srgb, var(--beam-1) 18%, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 50% at 62% 70%, color-mix(in srgb, var(--beam-3) 12%, transparent) 0%, transparent 70%);
+  opacity: var(--glow-opacity);
+}
+
+.at-glow > * {
+  position: relative;
+}
+
+/* ── Testo ────────────────────────────────────────────────────── */
+.at-kicker {
+  font-family: var(--type-kicker-family);
+  font-size: var(--type-kicker-size);
+  line-height: var(--type-kicker-line);
+  font-weight: var(--type-kicker-weight);
+  letter-spacing: var(--type-kicker-tracking);
+  text-transform: uppercase;
+  color: var(--vol-ink);
+}
+
+.at-frame > .at-frame__body > .at-kicker {
+  margin-bottom: var(--space-2);
+}
+
+/* Titolo con il gradiente del volume: solo cover, section ed end */
+.at-frame.cover h1,
+.at-frame.section h1,
+.at-frame.end h1 {
+  background: linear-gradient(135deg, var(--beam-1) 0%, var(--beam-2) 50%, var(--beam-3) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  padding-bottom: 0.12em;
+}
+
+.at-frame.cover h1,
+.at-frame.end h1 {
+  margin-top: var(--space-3);
+  font-family: var(--type-display-family);
+  font-size: var(--type-display-size);
+  line-height: var(--type-display-line);
+  font-weight: var(--type-display-weight);
+  letter-spacing: var(--type-display-tracking);
+}
+
+.at-frame.section h1 {
+  margin-top: var(--space-2);
+  font-family: var(--type-section-title-family);
+  font-size: var(--type-section-title-size);
+  line-height: var(--type-section-title-line);
+  font-weight: var(--type-section-title-weight);
+  letter-spacing: var(--type-section-title-tracking);
+}
+
+/* Sottotitolo: il primo paragrafo dopo il titolo */
+.at-frame.cover p:not(.at-kicker),
+.at-frame.section p:not(.at-kicker),
+.at-frame.end p:not(.at-kicker):not(.at-end__url) {
+  margin-top: var(--space-2);
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-line);
+  font-weight: var(--type-lead-weight);
+  color: var(--ink-muted-soft);
+}
+
+.at-frame.end p:not(.at-kicker):not(.at-end__url) {
+  margin-top: var(--space-3);
+}
+
+/* ── Slide di contenuto (layout default) ──────────────────────── */
+.at-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: 0 0 var(--space-6);
+}
+
+.at-content--center {
+  justify-content: center;
+}
+
+.at-frame.default h1 {
+  font-family: var(--type-slide-title-family);
+  font-size: var(--type-slide-title-size);
+  line-height: var(--type-slide-title-line);
+  font-weight: var(--type-slide-title-weight);
+  letter-spacing: var(--type-slide-title-tracking);
+  color: var(--ink-strong);
+}
+
+.at-frame.default p:not(.at-kicker) {
+  font-family: var(--type-lead-family);
+  font-size: var(--type-lead-size);
+  line-height: var(--type-lead-line);
+  font-weight: var(--type-lead-weight);
+  color: var(--ink);
+}
+
+.at-frame.default strong {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+/* Liste: pallino nel colore del volume */
+.at-frame.default ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.at-frame.default ul > li {
+  position: relative;
+  padding-left: var(--space-8);
+  color: var(--ink-body);
+}
+
+.at-frame.default ul > li::before {
+  content: '';
+  position: absolute;
+  left: var(--space-2);
+  top: 13px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--vol);
+}
+
+.at-frame.default ol {
+  padding-left: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  color: var(--ink-body);
+}
+
+.at-frame.default ol > li::marker {
+  color: var(--vol-ink);
+  font-family: var(--type-chrome-family);
+}
+
+/* ── Sezione ──────────────────────────────────────────────────── */
+.at-section__inner {
+  max-width: 720px;
+}
+
+/* ── Cover ed end ─────────────────────────────────────────────── */
+.at-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--type-kicker-family);
+  font-size: var(--type-kicker-size);
+  line-height: var(--type-kicker-line);
+  font-weight: var(--type-kicker-weight);
+  letter-spacing: 0.08em;
+  color: var(--ink);
+}
+
+.at-brand .at-logo {
+  width: 36px;
+  height: 36px;
+}
+
+.at-cover__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.at-cover__text {
+  max-width: 620px;
+}
+
+.at-frame.end .at-cover__main {
+  align-items: center;
+}
+
+.at-frame.end .at-cover__main {
+  gap: var(--space-10);
+}
+
+.at-end__text {
+  flex: 1;
+  min-width: 0;
+  max-width: 720px;
+}
+
+.at-frame .at-end__url {
+  margin-top: var(--space-6);
+  font-family: var(--font-mono-ui);
+  font-size: var(--type-code-size);
+  line-height: var(--type-code-line);
+  color: var(--vol-ink);
+  overflow-wrap: anywhere;
+}
+
+.at-tile {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 168px;
+  height: 168px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-elevated);
+  color: var(--vol);
+}
+
+.at-tile .at-vol-icon {
+  width: 84px;
+  height: 84px;
+}
+
+/* Codice QR: moduli scuri su fondo chiaro in entrambi i temi, perché i lettori
+   sono più sicuri così. Nel tema scuro la tessera prende i token invertiti. */
+.at-tile--qr {
+  color: var(--ink-strong);
+}
+
+html.dark .at-tile--qr {
+  background: var(--ink-strong);
+  color: var(--surface);
+}
+
+.at-qr {
+  display: block;
+  width: 136px;
+  height: 136px;
+}
+
+.at-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  font-family: var(--type-chrome-family);
+  font-size: var(--type-chrome-size);
+  line-height: var(--type-chrome-line);
+  letter-spacing: var(--type-chrome-tracking);
+  color: var(--ink-muted);
+}
+
+.at-frame.cover .at-meta {
+  margin-top: var(--space-8);
+}
+
+/* ── Logo e icona del volume ──────────────────────────────────── */
+.at-logo {
+  display: block;
+  flex: none;
+  border-radius: var(--radius-circle);
+}
+
+.at-vol-icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+}
+
+/* ── Footer: orientamento per la classe, non decorazione ──────── */
+.at-footer {
+  flex: none;
+  height: var(--footer-height);
+  margin: 0 calc(var(--space-14) * -1);
+  padding: 0 var(--space-14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  border-top: 1px solid var(--border);
+  font-family: var(--type-chrome-family);
+  font-size: var(--type-chrome-size);
+  line-height: var(--type-chrome-line);
+  letter-spacing: var(--type-chrome-tracking);
+  color: var(--ink-muted);
+}
+
+.at-footer__where {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  white-space: nowrap;
+}
+
+/* Volume e capitolo non si troncano mai: lo fa solo il titolo della lezione */
+.at-footer__fixed {
+  flex: none;
+}
+
+.at-footer__lesson {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.at-footer__num {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.at-footer .at-logo {
+  width: var(--logo-footer);
+  height: var(--logo-footer);
+}
+
+.at-footer .at-vol-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--vol);
+}
+
+/* ── Chip del volume ──────────────────────────────────────────── */
+.at-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 32px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--vol-tint);
+  color: var(--vol-ink);
+  font-family: var(--type-chrome-family);
+  font-size: var(--type-chrome-size);
+  font-weight: var(--type-kicker-weight);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.at-chip .at-vol-icon {
+  width: 16px;
+  height: 16px;
+}
