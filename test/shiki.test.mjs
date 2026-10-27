@@ -15,14 +15,16 @@ const jiti = createJiti(import.meta.url, { moduleCache: false })
 
 const setup = (await jiti.import(new URL('setup/shiki.ts', root).pathname)).default
 const { resolveShikiOptions } = await jiti.import('@slidev/client/setup/shiki-options.ts')
-const { options } = resolveShikiOptions([await setup({})])
+const setupResult = await setup({})
+const setupLangs = setupResult.langs
+const { options } = resolveShikiOptions([setupResult])
 
 const tokens = JSON.parse(readFileSync(new URL('tokens/tokens.json', root), 'utf8'))
 const hex = name => tokens.color.tokens.find(t => t.name === name).value
 
 const highlighter = await createHighlighter({
   themes: Object.values(options.themes),
-  langs: ['python', 'json'],
+  langs: ['python', 'json', 'sql'],
 })
 
 const SAMPLE = [
@@ -103,6 +105,25 @@ test('la classe dei commenti non dipende dal linguaggio né dal colore', () => {
   const list = spans('{"chiave": 1}', 'json')
   assert.ok(list.every(s => !s.cls.includes('token-comment')))
   assertColor(find(list, 'chiave'), 'code-string')
+})
+
+test('SQL: parole chiave, tipi, funzioni, stringhe, numeri e commenti (fase 14)', () => {
+  assert.ok(setupLangs.includes('sql'), 'setup/shiki.ts deve caricare sql per l\'editor dei runner')
+  const list = spans([
+    '-- gli studenti del quinto anno',
+    'CREATE TABLE casa (nome TEXT PRIMARY KEY, anni INTEGER NOT NULL);',
+    'SELECT COUNT(*) AS n, UPPER(nome) FROM studente WHERE anno = 5 ORDER BY nome;',
+    "INSERT INTO casa VALUES ('Grifondoro', 4);",
+  ].join('\n'), 'sql')
+  for (const word of ['CREATE', 'TABLE', 'TEXT', 'INTEGER', 'PRIMARY KEY', 'SELECT', 'COUNT', 'UPPER', 'FROM', 'WHERE', 'ORDER BY', 'INSERT INTO', 'VALUES'])
+    assertColor(find(list, word), 'code-keyword')
+  assertColor(find(list, "'Grifondoro'"), 'code-string')
+  for (const number of ['5', '4'])
+    assertColor(find(list, number), 'code-number')
+  const comment = find(list, '-- gli studenti del quinto anno')
+  assertColor(comment, 'code-comment')
+  assert.ok(comment.cls.includes('token-comment'))
+  assertColor(find(list, 'studente'), 'code-fg')
 })
 
 test('nessun corsivo nei temi', () => {

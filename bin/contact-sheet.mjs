@@ -13,7 +13,7 @@ import { basename, dirname, extname, join, relative, resolve } from 'node:path'
 import process from 'node:process'
 import { pathToFileURL } from 'node:url'
 import { load } from '@slidev/parser/fs'
-import { die, launchChromium, loadPlaywright, preparePyodide, projectRoot, runSlidev } from './deck-tools.mjs'
+import { die, launchChromium, loadPlaywright, prepareRuntimes, projectRoot, runSlidev } from './deck-tools.mjs'
 
 const COLUMNS = 3
 // Larghezza di una slide nel provino: con 600 px l'immagine intera è larga 1832 px, che si
@@ -57,7 +57,7 @@ async function main() {
   const entry = resolve(deck)
   const root = projectRoot(entry)
   const parsed = await load(root, entry)
-  preparePyodide(root, parsed.slides)
+  prepareRuntimes(root, parsed.slides)
 
   const work = mkdtempSync(join(tmpdir(), 'pdb-contact-sheet-'))
   try {

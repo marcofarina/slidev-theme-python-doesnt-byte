@@ -76,6 +76,8 @@ function codeTheme(mode: Mode): ThemeRegistration {
           'support.function.builtin',
           'support.type.python',
           'support.type.exception',
+          // SQL (fase 14): COUNT, MAX, UPPER… come le funzioni predefinite di Python.
+          'source.sql support.function',
         ],
         settings: { foreground: c('keyword') },
       },
@@ -117,8 +119,9 @@ export const themes = {
 // `langs`: lo Shiki del client (quello che Slidev passa a Monaco) carica solo markdown,
 // vue, JS, TS, HTML e CSS. Senza Python l'editor dei runner (fase 5) usa il tokenizer
 // Monarch di Monaco, che non conosce gli scope del tema: i numeri restano senza colore.
+// Lo stesso vale per l'SQL dei runner della fase 14.
 export default defineShikiSetup((): ShikiSetupReturn => ({
   themes,
-  langs: ['python'],
+  langs: ['python', 'sql'],
   transformers: [commentTransformer],
 }))

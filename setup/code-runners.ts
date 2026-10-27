@@ -9,10 +9,14 @@
 // nell'output nell'ordine in cui arrivano. Un'eccezione dà l'ultima riga del traceback,
 // marcata come errore. Il codice gira nel thread della pagina: un ciclo infinito blocca la
 // presentazione finché non si ricarica.
+//
+// Il runner SQL (fase 14) sta in sql-runner.ts e si registra qui sotto.
 
 import type { CodeRunnerOutputs } from '@slidev/types'
 import type { PyodideAPI } from 'pyodide'
+import type { SqlRunnerOptions } from './sql-runner'
 import { defineCodeRunnersSetup } from '@slidev/types'
+import { runSql } from './sql-runner'
 
 interface Chunk {
   text: string
@@ -161,5 +165,10 @@ export default defineCodeRunnersSetup(() => ({
     const run = queue.then(() => execute(code))
     queue = run.catch(() => {})
     return run
+  },
+  // Le opzioni (`dataset`, `show`) arrivano dalla riga d'apertura del blocco
+  // (plugins/sql-options.ts).
+  sql(code, ctx) {
+    return runSql(code, ctx.options as SqlRunnerOptions)
   },
 }))

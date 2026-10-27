@@ -38,3 +38,7 @@ src: ./examples/diagrams.md
 ---
 src: ./examples/result.md
 ---
+
+---
+src: ./examples/sql.md
+---

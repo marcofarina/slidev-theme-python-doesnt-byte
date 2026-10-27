@@ -9,7 +9,11 @@ import { dirname, extname, join, normalize, resolve, sep } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
-const COPY_PYODIDE = fileURLToPath(new URL('./copy-pyodide.mjs', import.meta.url))
+// Runtime dei blocchi eseguibili: chi li copia nel deck e come si riconosce un blocco che li usa.
+const RUNTIMES = [
+  { name: 'Pyodide', folder: 'public/pyodide/', script: fileURLToPath(new URL('./copy-pyodide.mjs', import.meta.url)), block: /(?:`{3,}|~{3,})\s*python\b[^\n]*\{monaco-run\}/ },
+  { name: 'sql.js', folder: 'public/sqljs/', script: fileURLToPath(new URL('./copy-sqljs.mjs', import.meta.url)), block: /(?:`{3,}|~{3,})\s*sql\b[^\n]*\{monaco-run\}/ },
+]
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -70,14 +74,16 @@ export function runSlidev(root, args, label) {
   }
 }
 
-/** Se il deck ha blocchi eseguibili, Pyodide deve stare in public/pyodide/ prima di compilare. */
-export function preparePyodide(root, slides) {
-  if (!slides.some(slide => /monaco-run/.test(slide.content ?? '')))
-    return
-  const run = spawnSync(process.execPath, [COPY_PYODIDE, root], { encoding: 'utf8' })
-  if (run.status !== 0) {
-    process.stderr.write(run.stderr)
-    die('✗ Pyodide non si è copiato in public/pyodide/')
+/** Se il deck ha blocchi eseguibili in Python o in SQL, il loro runtime deve stare in public/ prima di compilare. */
+export function prepareRuntimes(root, slides) {
+  for (const runtime of RUNTIMES) {
+    if (!slides.some(slide => runtime.block.test(slide.content ?? '')))
+      continue
+    const run = spawnSync(process.execPath, [runtime.script, root], { encoding: 'utf8' })
+    if (run.status !== 0) {
+      process.stderr.write(run.stderr)
+      die(`✗ ${runtime.name} non si è copiato in ${runtime.folder}`)
+    }
   }
 }
 

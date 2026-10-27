@@ -24,7 +24,7 @@ import { join, relative, resolve } from 'node:path'
 import process from 'node:process'
 import { injectPreparserExtensionLoader, load } from '@slidev/parser/fs'
 import { addResultSlides } from '../setup/result-slides.mjs'
-import { die, launchChromium, loadPlaywright, preparePyodide, projectRoot, runSlidev, serve } from './deck-tools.mjs'
+import { die, launchChromium, loadPlaywright, prepareRuntimes, projectRoot, runSlidev, serve } from './deck-tools.mjs'
 
 // Le slide del risultato si contano come le conta Slidev con il preparser del tema.
 injectPreparserExtensionLoader(async () => [{ name: 'python-doesnt-byte:result', transformRawLines: addResultSlides }])
@@ -159,7 +159,7 @@ async function verifyDeck(deck, browser) {
   const entry = resolve(deck)
   const shown = relative(process.cwd(), entry) || deck
   const parsed = await load(root, entry)
-  preparePyodide(root, parsed.slides)
+  prepareRuntimes(root, parsed.slides)
 
   const output = mkdtempSync(join(tmpdir(), 'pdb-verify-'))
   const problems = []

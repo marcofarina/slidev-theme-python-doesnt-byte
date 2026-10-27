@@ -35,3 +35,6 @@ test/visual/output/
 
 # Provini di pdb-contact-sheet
 contact-sheet/
+
+# SQL eseguito da sql.js (bin/copy-sqljs.mjs: predev, prebuild)
+public/sqljs/
