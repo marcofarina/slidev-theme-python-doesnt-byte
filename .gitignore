@@ -28,3 +28,7 @@ example.dark.md
 
 # Pyodide copiato da bin/copy-pyodide.mjs (predev, prebuild)
 public/pyodide/
+
+# Test visivi: immagini del confronto e copie temporanee per il tema scuro
+test/visual/output/
+*.visual-dark.md
