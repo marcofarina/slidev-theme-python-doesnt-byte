@@ -51,8 +51,8 @@ Le due colonne hanno la stessa larghezza.
 ::right::
 
 ```python
-for casa in ("Grifondoro", "Serpeverde"):
-    print(casa)
+for punto in (3, 7, 12):
+    print(punto)
 ```
 
 ---

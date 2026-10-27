@@ -86,7 +86,9 @@ function escapeHtml(text: string): string {
 
 // L'output è un <pre class="at-output"> nostro, come in bundle.css di Atmospheric: Slidev
 // lo mostra così com'è, senza i suoi stili per riga.
-function render(chunks: Chunk[]): CodeRunnerOutputs {
+// `data-error` dice a pdb-verify che il programma è finito con un'eccezione (e non solo con
+// qualcosa su stderr).
+function render(chunks: Chunk[], failed = false): CodeRunnerOutputs {
   const parts = chunks.map((chunk, index) => {
     const text = index === chunks.length - 1 ? chunk.text.replace(/\n$/, '') : chunk.text
     return chunk.error
@@ -95,11 +97,11 @@ function render(chunks: Chunk[]): CodeRunnerOutputs {
   })
   if (!parts.join(''))
     return { html: '<pre class="at-output at-output--empty">Nessun output</pre>' }
-  return { html: `<pre class="at-output">${parts.join('')}</pre>` }
+  return { html: `<pre class="at-output"${failed ? ' data-error' : ''}>${parts.join('')}</pre>` }
 }
 
 function failure(message: string): CodeRunnerOutputs {
-  return render([{ text: message, error: true }])
+  return render([{ text: message, error: true }], true)
 }
 
 async function execute(code: string): Promise<CodeRunnerOutputs> {
@@ -150,7 +152,7 @@ async function execute(code: string): Promise<CodeRunnerOutputs> {
       last.text += '\n'
     chunks.push({ text: lastTracebackLine(raised), error: true })
   }
-  return render(chunks)
+  return render(chunks, raised !== undefined)
 }
 
 export default defineCodeRunnersSetup(() => ({

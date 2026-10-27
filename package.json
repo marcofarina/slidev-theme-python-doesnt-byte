@@ -17,7 +17,10 @@
     "node": ">=20.12.0"
   },
   "bin": {
-    "pdb-copy-pyodide": "bin/copy-pyodide.mjs"
+    "pdb-copy-pyodide": "bin/copy-pyodide.mjs",
+    "pdb-check": "bin/check.mjs",
+    "pdb-verify": "bin/verify.mjs",
+    "pdb-contact-sheet": "bin/contact-sheet.mjs"
   },
   "scripts": {
     "predev": "node bin/copy-pyodide.mjs",
@@ -37,14 +40,26 @@
     "test:visual": "node test/visual/run.mjs",
     "pretest:visual:update": "node bin/copy-pyodide.mjs",
     "test:visual:update": "node test/visual/run.mjs --update",
-    "test": "node --test test/*.test.mjs && npm run test:runner && npm run test:visual"
+    "check": "node bin/check.mjs example.md",
+    "verify": "node bin/verify.mjs example.md",
+    "sheet": "node bin/contact-sheet.mjs example.md",
+    "test": "node --test test/*.test.mjs && npm run check && npm run verify && npm run test:runner && npm run test:visual"
   },
   "dependencies": {
+    "@slidev/parser": "^53.0.0",
     "@slidev/types": "^53.0.0",
     "markdown-it-container": "^4.0.0",
     "pele": "^1.12.0",
     "pyodide": "^314.0.7",
     "qrcode": "^1.5.4"
+  },
+  "peerDependencies": {
+    "playwright-chromium": "^1.64.1"
+  },
+  "peerDependenciesMeta": {
+    "playwright-chromium": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@slidev/cli": "^53.0.0",

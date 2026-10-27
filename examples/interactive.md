@@ -35,6 +35,7 @@ for nome, punti in registro:
 
 ---
 layout: exercise
+verify: error
 ---
 
 # Dodici pozioni, zero studenti
