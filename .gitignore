@@ -25,3 +25,6 @@ pm/
 # Esportazioni locali di npm run snap
 snapshots/
 example.dark.md
+
+# Pyodide copiato da bin/copy-pyodide.mjs (predev, prebuild)
+public/pyodide/

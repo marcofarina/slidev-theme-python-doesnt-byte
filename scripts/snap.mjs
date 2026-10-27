@@ -1,6 +1,9 @@
 // Esporta in PNG le slide di example.md nei due temi: snapshots/light/ e snapshots/dark/.
 // Uso: npm run snap.
 //
+// Con `--with-clicks` ogni stato dei clic è un PNG (`NNN-CC.png`): così si vedono anche la
+// domanda prima e dopo la risposta, i passi del codice e le rivelazioni di `v-click`.
+//
 // `slidev export --dark` emula solo `prefers-color-scheme: dark`, e Slidev lo ignora quando
 // il deck fissa `colorSchema: light` (il predefinito del tema). Per il tema scuro lo script
 // esporta quindi una copia temporanea di example.md con `colorSchema: dark` nell'headmatter.
@@ -15,7 +18,7 @@ const entry = 'example.md'
 const darkEntry = 'example.dark.md'
 
 function exportPng(file, output) {
-  const run = spawnSync('npx', ['slidev', 'export', file, '--format', 'png', '--output', output], {
+  const run = spawnSync('npx', ['slidev', 'export', file, '--format', 'png', '--with-clicks', '--output', output], {
     cwd: root,
     stdio: 'inherit',
   })

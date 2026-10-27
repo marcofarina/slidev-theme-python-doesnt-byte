@@ -1,1 +1,310 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Domande ed esercizi (fase 5): layout question ed exercise, <Options>, runner Python.
+   Classi `at-*` come in bundle.css di Atmospheric. Il runner è quello di Slidev
+   (Monaco + CodeRunner): qui si ridisegna il suo DOM, senza sostituirne i componenti.
+   Solo variabili di styles/tokens.css, mai valori grezzi. */
+
+/* ── Titolo e testo ───────────────────────────────────────────── */
+.at-frame:is(.question, .exercise) h1 {
+  font-family: var(--type-slide-title-family);
+  font-size: var(--type-slide-title-size);
+  line-height: var(--type-slide-title-line);
+  font-weight: var(--type-slide-title-weight);
+  letter-spacing: var(--type-slide-title-tracking);
+  color: var(--ink-strong);
+}
+
+.at-frame:is(.question, .exercise) .at-content > p {
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  font-weight: var(--type-body-weight);
+  color: var(--ink-body);
+}
+
+.at-frame:is(.question, .exercise) strong {
+  font-weight: 700;
+  color: var(--ink-strong);
+}
+
+/* ── question: domanda, codice facoltativo, opzioni ───────────── */
+.at-frame.question .at-content {
+  gap: var(--space-5);
+}
+
+.at-options {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4) var(--space-6);
+}
+
+.at-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: calc(var(--space-12) + var(--space-6));
+  padding: var(--space-3) var(--space-5) var(--space-3) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--border-strong), var(--shadow-card);
+  color: var(--ink);
+  font-family: var(--type-body-family);
+  font-size: var(--type-body-size);
+  line-height: var(--type-body-line);
+  transition:
+    opacity var(--dur-normal) var(--ease-out),
+    background-color var(--dur-normal) var(--ease-out),
+    box-shadow var(--dur-normal) var(--ease-out);
+}
+
+.at-option__letter {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--space-10);
+  height: var(--space-10);
+  border-radius: var(--radius-xs);
+  background: var(--surface-chip);
+  font-family: var(--type-button-family);
+  font-size: var(--type-button-size);
+  line-height: var(--type-button-line);
+  font-weight: var(--type-button-weight);
+  color: var(--ink);
+}
+
+.at-option__text {
+  min-width: 0;
+}
+
+.at-option__state {
+  margin-left: auto;
+  display: none;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--type-chrome-family);
+  font-size: var(--type-chrome-size);
+  line-height: var(--type-chrome-line);
+  font-weight: var(--type-button-weight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.at-option__state svg {
+  width: var(--space-4);
+  height: var(--space-4);
+  fill: currentColor;
+}
+
+.at-option.is-correct {
+  background: var(--answer-correct-bg);
+  box-shadow: inset 0 0 0 2px var(--answer-correct), var(--shadow-elevated);
+}
+
+.at-option.is-correct .at-option__state {
+  display: inline-flex;
+  color: var(--answer-correct);
+}
+
+.at-option.is-wrong {
+  background: var(--answer-wrong-bg);
+  box-shadow: inset 0 0 0 2px var(--answer-wrong);
+}
+
+.at-option.is-wrong .at-option__state {
+  display: inline-flex;
+  color: var(--answer-wrong);
+}
+
+.at-option.is-faded {
+  opacity: 0.55;
+}
+
+/* ── exercise: icona accanto a kicker e titolo ────────────────────
+   Il titolo è il `# h1` dello slot: `.at-content` cede i figli alla griglia del corpo,
+   che mette il titolo nella seconda colonna e il resto a tutta larghezza. */
+.at-frame.exercise > .at-frame__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-4);
+  align-content: start;
+}
+
+.at-task__icon {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: calc(var(--space-10) + var(--space-1));
+  height: calc(var(--space-10) + var(--space-1));
+  object-fit: contain;
+}
+
+.at-frame.exercise > .at-frame__body > .at-kicker {
+  grid-column: 2;
+  grid-row: 1;
+  margin-bottom: var(--space-1);
+}
+
+.at-frame.exercise .at-content {
+  display: contents;
+}
+
+.at-frame.exercise .at-content > h1 {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.at-frame.exercise .at-content > :not(h1) {
+  grid-column: 1 / -1;
+  margin-top: var(--space-4);
+}
+
+.at-frame.exercise .at-content > h1 + * {
+  margin-top: var(--space-6);
+}
+
+/* ── Runner: editor, barra, output ────────────────────────────────
+   DOM di Slidev 53 (Monaco.vue, internals/CodeRunner.vue):
+     .slidev-monaco-container
+       .slidev-monaco-container-inner      editor          → .at-code
+       [data-waitfor] > .slidev-runner-output              → .at-output
+       div > button.slidev-icon-btn        pulsante Run    → .at-runner__bar, .at-btn
+   L'output (<pre class="at-output">) lo scrive setup/code-runners.ts. */
+.slidev-layout .slidev-monaco-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+/* Il margine interno lo danno le opzioni di Monaco (setup/monaco.ts): qui lo spazio a destra. */
+.slidev-layout .slidev-monaco-container-inner {
+  order: 1;
+  padding: 0;
+  border-radius: var(--radius-md);
+  background: var(--code-bg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.slidev-layout .slidev-monaco-container-inner > div {
+  inset: 0 var(--space-5) 0 0;
+}
+
+/* Barra: etichetta a sinistra, pulsante a destra */
+.slidev-layout .slidev-monaco-container > div:has(> .slidev-icon-btn) {
+  order: 2;
+  position: static;
+  max-height: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.slidev-layout .slidev-monaco-container:has(.monaco-editor[data-uri$='.python']) > div:has(> .slidev-icon-btn)::before {
+  content: 'Python · Pyodide';
+  font-family: var(--type-chrome-family);
+  font-size: var(--type-chrome-size);
+  line-height: var(--type-chrome-line);
+  font-weight: var(--type-chrome-weight);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+html[data-pdb-python='loading'] .slidev-layout .slidev-monaco-container:has(.monaco-editor[data-uri$='.python']) > div:has(> .slidev-icon-btn)::before {
+  content: 'Python · avvio di Pyodide…';
+}
+
+/* Pulsante «Esegui»: accent / on-accent */
+.slidev-layout .slidev-monaco-container .slidev-icon-btn {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: auto;
+  height: calc(var(--space-8) + var(--space-1));
+  aspect-ratio: auto;
+  padding: 0 var(--space-4);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--on-accent);
+  opacity: 1;
+  font-family: var(--type-button-family);
+  font-size: var(--type-button-size);
+  line-height: var(--type-button-line);
+  font-weight: var(--type-button-weight);
+  cursor: pointer;
+}
+
+.slidev-layout .slidev-monaco-container .slidev-icon-btn:hover {
+  background: var(--accent-soft);
+  opacity: 1;
+}
+
+.slidev-layout .slidev-monaco-container .slidev-icon-btn:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.slidev-layout .slidev-monaco-container .slidev-icon-btn::after {
+  content: 'Esegui';
+}
+
+.slidev-layout .slidev-monaco-container .slidev-icon-btn > div {
+  width: 1em;
+  height: 1em;
+}
+
+html[data-pdb-python='loading'] .slidev-layout .slidev-monaco-container .slidev-icon-btn {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+/* Output. Prima del primo Run, mentre gira e dove il codice non si esegue, Slidev mostra
+   un avviso in inglese al posto dell'output: lo nascondo, la barra basta. */
+.slidev-layout .slidev-monaco-container > [data-waitfor] {
+  order: 3;
+  border: 0;
+  border-radius: 0;
+}
+
+.slidev-layout .slidev-monaco-container > [data-waitfor]:not(:has(.slidev-runner-output)) {
+  display: none;
+}
+
+.slidev-layout .slidev-runner-output {
+  padding: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.slidev-layout .at-output {
+  margin: 0;
+  max-height: calc(6 * (var(--type-caption-size) + var(--space-2)) + 2 * var(--space-3));
+  overflow-y: auto;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+  color: var(--ink);
+  font-family: var(--type-code-family);
+  font-size: var(--type-caption-size);
+  line-height: calc(var(--type-caption-size) + var(--space-2));
+  font-weight: var(--type-code-weight);
+  font-variant-ligatures: no-common-ligatures contextual;
+  font-feature-settings: 'liga' 0, 'calt' 1;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.slidev-layout .at-output__err {
+  color: var(--callout-danger-fg);
+}
+
+.slidev-layout .at-output--empty {
+  color: var(--ink-muted);
+}

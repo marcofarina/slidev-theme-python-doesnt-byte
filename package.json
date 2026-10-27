@@ -16,18 +16,28 @@
   "engines": {
     "node": ">=20.12.0"
   },
+  "bin": {
+    "pdb-copy-pyodide": "bin/copy-pyodide.mjs"
+  },
   "scripts": {
+    "predev": "node bin/copy-pyodide.mjs",
     "dev": "slidev example.md --open",
+    "prebuild": "node bin/copy-pyodide.mjs",
     "build": "slidev build example.md",
+    "preexport": "node bin/copy-pyodide.mjs",
     "export": "slidev export example.md",
+    "prescreenshot": "node bin/copy-pyodide.mjs",
     "screenshot": "slidev export example.md --format png",
     "tokens": "node scripts/build-tokens.mjs",
     "contrast": "node scripts/check-contrast.mjs",
-    "snap": "node scripts/snap.mjs"
+    "presnap": "node bin/copy-pyodide.mjs",
+    "snap": "node scripts/snap.mjs",
+    "test:runner": "node test/runner-offline.mjs"
   },
   "dependencies": {
     "@slidev/types": "^53.0.0",
     "markdown-it-container": "^4.0.0",
+    "pyodide": "^314.0.7",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {

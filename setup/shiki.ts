@@ -114,7 +114,11 @@ export const themes = {
   dark: codeTheme('dark'),
 }
 
+// `langs`: lo Shiki del client (quello che Slidev passa a Monaco) carica solo markdown,
+// vue, JS, TS, HTML e CSS. Senza Python l'editor dei runner (fase 5) usa il tokenizer
+// Monarch di Monaco, che non conosce gli scope del tema: i numeri restano senza colore.
 export default defineShikiSetup((): ShikiSetupReturn => ({
   themes,
+  langs: ['python'],
   transformers: [commentTransformer],
 }))
