@@ -1,1 +1,48 @@
-/* Riempito dalla fase che possiede questo file: vedi pm/piano.md, «Proprietà dei file». */
+/* Diagrammi Mermaid con Pele (fase 6): il renderer è setup/mermaid-renderer.ts.
+   L'SVG sta nello shadow root del componente `Mermaid` di Slidev (`div.mermaid`): da qui
+   arrivano solo le variabili, che si ereditano, e la parte `diagram` dell'SVG.
+   Card LayoutFigure: linee ed evidenze in `vol-*`, riempimenti in `vol-*-tint` o
+   `surface-chip`, testo in `ink` e `font-mono`. Le variabili si risolvono sotto
+   `data-volume`, quindi il diagramma prende il colore del volume e cambia con il tema
+   senza essere ridisegnato. */
+
+.slidev-layout .mermaid {
+  --pele-bg: var(--surface);
+  --pele-fg: var(--ink);
+  --pele-muted: var(--ink-muted);
+  --pele-line: var(--vol);
+  --pele-surface: var(--vol-tint);
+  --pele-surface-alt: var(--surface-chip);
+  --pele-border: var(--vol);
+  --pele-accent: var(--vol);
+  --pele-critical: var(--answer-wrong);
+  --pele-error: var(--answer-wrong);
+  --pele-font: var(--font-mono);
+  --pele-font-mono: var(--font-mono);
+  --pele-radius: var(--radius-xs);
+
+  /* Grafici (pie, gitGraph…): i quattro volumi, poi il gradiente del marchio. */
+  --pele-series-1: var(--vol-programmatore);
+  --pele-series-2: var(--vol-artefice);
+  --pele-series-3: var(--vol-archivista);
+  --pele-series-4: var(--vol-apprendista);
+  --pele-series-5: var(--grad-1);
+  --pele-series-6: var(--grad-2);
+  --pele-series-7: var(--grad-3);
+  --pele-series-8: var(--ink-muted);
+
+  /* Monaspace Neon ha solo i pesi 400 e 500: i nomi delle classi, in grassetto, usano il
+     500 invece di un grassetto finto. */
+  font-synthesis-weight: none;
+  font-feature-settings: 'liga' 0, 'calt' 1;
+}
+
+/* Lo sfondo delle etichette sulle frecce è quello del fondo su cui sta il diagramma. */
+.at-figure__frame .mermaid {
+  --pele-bg: var(--surface-raised);
+}
+
+.slidev-layout .mermaid::part(diagram) {
+  display: block;
+  margin-inline: auto;
+}
