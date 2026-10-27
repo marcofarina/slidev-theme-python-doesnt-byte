@@ -86,8 +86,9 @@ try {
   })
 
   // Numeri delle slide `exercise`: il parser di Slidev risolve anche i `src:` di example.md.
+  // Con `output: next` il blocco si esegue nella slide del risultato (fase 13): qui si salta.
   const { slides } = await load(root, entry)
-  const exercises = slides.flatMap((slide, index) => slide.frontmatter.layout === 'exercise' ? [index + 1] : [])
+  const exercises = slides.flatMap((slide, index) => slide.frontmatter.layout === 'exercise' && slide.frontmatter.output !== 'next' ? [index + 1] : [])
 
   if (exercises.length !== EXPECTED.length)
     fail(`attese ${EXPECTED.length} slide exercise in example.md, trovate ${exercises.length}`)

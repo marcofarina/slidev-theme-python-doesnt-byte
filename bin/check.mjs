@@ -12,7 +12,13 @@ import { existsSync, readdirSync, readFileSync, realpathSync } from 'node:fs'
 import { basename, relative } from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { load } from '@slidev/parser/fs'
+import { injectPreparserExtensionLoader, load } from '@slidev/parser/fs'
+import { addResultSlides } from '../setup/result-slides.mjs'
+
+// Le slide del risultato (`output: next`) le aggiunge il preparser del tema: qui si aggiungono
+// allo stesso modo, così i numeri delle slide sono quelli di Slidev e le slide generate si
+// controllano come le altre.
+injectPreparserExtensionLoader(async () => [{ name: 'python-doesnt-byte:result', transformRawLines: addResultSlides }])
 
 const themeFile = path => fileURLToPath(new URL(`../${path}`, import.meta.url))
 
@@ -50,10 +56,13 @@ function themeVolumes() {
 function scan(content) {
   const text = []
   const blocks = []
+  let runnable = 0
   let fence
   for (const line of content.split('\n')) {
     if (!fence) {
       const open = /^\s*(`{3,}|~{3,})/.exec(line)
+      if (open && /\{monaco-run\}/.test(line))
+        runnable++
       if (open)
         fence = { char: open[1][0], size: open[1].length, lang: line.trim().slice(open[1].length).trim().split(/[\s{]/)[0], lines: [] }
       else
@@ -75,7 +84,7 @@ function scan(content) {
   }
   if (fence && fence.lang !== 'mermaid')
     blocks.push(fence.lines.length)
-  return { text, blocks }
+  return { text, blocks, runnable }
 }
 
 const withoutInlineCode = line => line.replace(/(`+)(?:(?!\1).)+\1/g, '')
@@ -107,7 +116,14 @@ export function checkSlide(slide, number, theme) {
   if (fm.verify !== undefined && !['error', 'skip'].includes(String(fm.verify)))
     errors.push(`verify: «${fm.verify}» non è valido (error o skip)`)
 
-  const { text, blocks } = scan(slide.content ?? '')
+  const { text, blocks, runnable } = scan(slide.content ?? '')
+
+  if (fm.output !== undefined) {
+    if (String(fm.output) !== 'next')
+      errors.push(`output: «${fm.output}» non è valido (solo next)`)
+    else if (runnable === 0)
+      errors.push('`output: next` senza un blocco eseguibile ({monaco-run}): non c’è un risultato da mostrare')
+  }
 
   const used = text.flatMap(line => [...line.matchAll(/^::([\w-]+)::\s*$/g)].map(match => match[1]))
   if (known) {
@@ -175,7 +191,11 @@ export async function checkDeck(entry) {
   const theme = { layouts: themeLayouts() }
   const problems = checkHeadmatter(deck.headmatter ?? {}).map(message => ({ file: shown(entry), where: 'headmatter', message }))
   deck.slides.forEach((slide, index) => {
-    for (const message of checkSlide(slide, index + 1, theme))
+    const messages = checkSlide(slide, index + 1, theme)
+    // La slide del risultato la genera il tema dopo una slide con `output: next`.
+    if (slide.frontmatter?.layout === 'result' && String(deck.slides[index - 1]?.frontmatter?.output) !== 'next')
+      messages.push('il layout «result» non si scrive a mano: metti `output: next` nella slide del codice')
+    for (const message of messages)
       problems.push({ file: shown(slide.source?.filepath ?? entry), where: `slide ${index + 1}`, message })
   })
   return { slides: deck.slides.length, problems }

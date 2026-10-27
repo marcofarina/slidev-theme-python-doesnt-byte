@@ -30,6 +30,9 @@ const ERRORS = [
   ['dunder-fuori-backtick', 'slide 2', 'i nomi con __ vanno tra backtick'],
   ['codice-troppo-lungo', 'slide 2', 'blocco di codice di 12 righe'],
   ['verify-sconosciuto', 'slide 2', 'verify: «ignora»'],
+  ['output-sconosciuto', 'slide 2', 'output: «sotto» non è valido'],
+  ['output-senza-blocco', 'slide 2', '`output: next` senza un blocco eseguibile'],
+  ['result-a-mano', 'slide 2', 'il layout «result» non si scrive a mano'],
 ]
 
 test('un deck valido esce con 0', () => {
@@ -48,6 +51,12 @@ for (const [fixture, where, reason] of ERRORS) {
     assert.ok(line.startsWith(`✗ test/fixtures/${fixture}.md: ${where}: `), `riga: ${line}`)
   })
 }
+
+test('output: next conta la slide generata, come Slidev', () => {
+  const result = run('output-next')
+  assert.equal(result.status, 0, result.err)
+  assert.match(result.out, /^✓ test\/fixtures\/output-next\.md \(4 slide\)/)
+})
 
 test('senza argomenti stampa l’uso ed esce con 2', () => {
   const result = spawnSync(process.execPath, [check], { cwd: root, encoding: 'utf8' })

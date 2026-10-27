@@ -34,3 +34,7 @@ src: ./examples/interactive.md
 ---
 src: ./examples/diagrams.md
 ---
+
+---
+src: ./examples/result.md
+---

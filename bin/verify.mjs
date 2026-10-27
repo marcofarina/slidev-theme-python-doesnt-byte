@@ -14,14 +14,20 @@
 //   - richieste di rete (bloccate) fatte dalla slide.
 // Una slide dichiara `verify: error` (il blocco deve andare in errore) o `verify: skip` (non si
 // esegue) nel frontmatter; SlideFrame lo espone come `data-verify` e qui si legge dal DOM.
+// Con `output: next` il blocco non si esegue nella slide del codice: si controlla che «Esegui»
+// porti alla slide del risultato, e il blocco si esegue e si misura lì.
 // Si misura solo in light: le misure non cambiano col tema.
 
 import { existsSync, mkdtempSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, relative, resolve } from 'node:path'
 import process from 'node:process'
-import { load } from '@slidev/parser/fs'
+import { injectPreparserExtensionLoader, load } from '@slidev/parser/fs'
+import { addResultSlides } from '../setup/result-slides.mjs'
 import { die, launchChromium, loadPlaywright, preparePyodide, projectRoot, runSlidev, serve } from './deck-tools.mjs'
+
+// Le slide del risultato si contano come le conta Slidev con il preparser del tema.
+injectPreparserExtensionLoader(async () => [{ name: 'python-doesnt-byte:result', transformRawLines: addResultSlides }])
 
 const CANVAS = { width: 980, height: 552 }
 const RUN_TIMEOUT = 20_000
@@ -215,6 +221,9 @@ async function verifyDeck(deck, browser) {
           problems.push({ slide: number, message: 'la slide non è nel DOM' })
         for (const problem of result.problems)
           problems.push({ slide: number, message: problem.detail })
+
+        if (await slide.locator('.slidev-layout').getAttribute('data-output') === 'next')
+          await checkResultLink(page, slide, number, problems)
       }
       return { shown, total, problems }
     }
@@ -230,25 +239,34 @@ async function verifyDeck(deck, browser) {
 
 /** Esegue ogni runner della slide, come in classe, e segnala errori, blocchi e output che scorre. */
 async function runBlocks(page, slide, number, problems) {
-  const mode = await slide.locator('.slidev-layout').getAttribute('data-verify')
+  const layout = slide.locator('.slidev-layout')
+  const mode = await layout.getAttribute('data-verify')
+  // `output: next`: qui il blocco non si esegue (lo fa checkResultLink). Nella slide del
+  // risultato l'editor è nascosto e il blocco parte da solo.
+  if (await layout.getAttribute('data-output') === 'next')
+    return
+  const isResult = await layout.evaluate(element => element.classList.contains('result'))
   const containers = slide.locator('.slidev-monaco-container')
   const count = await containers.count()
   let index = 0
   for (let i = 0; i < count; i++) {
     const container = containers.nth(i)
-    // L'editor si carica a richiesta: senza, il pulsante non funziona.
-    const editor = await container.locator('.monaco-editor').first().waitFor({ timeout: EDITOR_TIMEOUT }).then(() => true, () => false)
-    const button = container.locator('.slidev-icon-btn')
-    if (!editor || (await button.count()) === 0) {
-      if (!editor)
-        problems.push({ slide: number, message: `blocco ${i + 1}: l’editor non si carica in ${EDITOR_TIMEOUT / 1000} secondi` })
-      continue
+    if (!isResult) {
+      // L'editor si carica a richiesta: senza, il pulsante non funziona.
+      const editor = await container.locator('.monaco-editor').first().waitFor({ timeout: EDITOR_TIMEOUT }).then(() => true, () => false)
+      const button = container.locator('.slidev-icon-btn')
+      if (!editor || (await button.count()) === 0) {
+        if (!editor)
+          problems.push({ slide: number, message: `blocco ${i + 1}: l’editor non si carica in ${EDITOR_TIMEOUT / 1000} secondi` })
+        continue
+      }
     }
     index++
     if (mode === 'skip')
       continue
     const name = `blocco ${index}`
-    await button.first().click()
+    if (!isResult)
+      await container.locator('.slidev-icon-btn').first().click()
     const output = container.locator('.at-output')
     const finished = await output.waitFor({ timeout: RUN_TIMEOUT }).then(() => true, () => false)
     if (!finished) {
@@ -264,9 +282,28 @@ async function runBlocks(page, slide, number, problems) {
       problems.push({ slide: number, message: `${name}: doveva andare in errore (\`verify: error\`) e non ci va` })
     }
     const hidden = await output.evaluate(element => element.scrollHeight - element.clientHeight)
-    if (hidden > 2)
-      problems.push({ slide: number, message: `${name}: l’output non sta nel riquadro e scorre (mancano ${hidden} px)` })
+    if (hidden > 2 && isResult)
+      problems.push({ slide: number, message: `${name}: l’output non sta nemmeno nella slide del risultato e scorre (mancano ${hidden} px): accorcialo, con meno righe o righe più corte` })
+    else if (hidden > 2)
+      problems.push({ slide: number, message: `${name}: l’output non sta nel riquadro e scorre (mancano ${hidden} px): metti \`output: next\` nel frontmatter della slide, e il risultato avrà una slide sua` })
   }
+}
+
+/** Con `output: next`, «Esegui» deve portare alla slide successiva, e quella dev'essere la slide del risultato. */
+async function checkResultLink(page, slide, number, problems) {
+  const button = slide.locator('.slidev-monaco-container .slidev-icon-btn').first()
+  const ready = await button.waitFor({ timeout: EDITOR_TIMEOUT }).then(() => true, () => false)
+  if (!ready) {
+    problems.push({ slide: number, message: `\`output: next\`: il pulsante «Esegui» non compare in ${EDITOR_TIMEOUT / 1000} secondi` })
+    return
+  }
+  await button.click()
+  const moved = await page.waitForURL(url => new URL(url).pathname.endsWith(`/${number + 1}`), { timeout: 5_000 }).then(() => true, () => false)
+  const next = page.locator(`[data-slidev-no="${number + 1}"] .slidev-layout.result`)
+  if (!moved)
+    problems.push({ slide: number, message: '`output: next`: «Esegui» non porta alla slide successiva' })
+  else if (!await next.waitFor({ state: 'attached', timeout: 5_000 }).then(() => true, () => false))
+    problems.push({ slide: number, message: '`output: next`: la slide successiva non è quella del risultato' })
 }
 
 async function main(decks) {

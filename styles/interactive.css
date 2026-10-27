@@ -308,3 +308,73 @@ html[data-pdb-python='loading'] .slidev-layout .slidev-monaco-container .slidev-
 .slidev-layout .at-output--empty {
   color: var(--ink-muted);
 }
+
+/* ── Slide del codice con `output: next` (fase 13) ────────────────
+   «Esegui» porta alla slide del risultato (components/SlideFrame.vue): l'output qui non si
+   apre. In export Slidev esegue comunque il blocco, quindi l'output si nasconde. */
+.at-frame[data-output='next'] .slidev-monaco-container > [data-waitfor] {
+  display: none;
+}
+
+.at-frame[data-output='next'] .slidev-monaco-container .slidev-icon-btn::after {
+  content: 'Esegui →';
+}
+
+/* ── Slide del risultato (layout result, fase 13) ─────────────────
+   Generata da setup/preparser.ts. L'editor non si vede: la barra dice da dove viene il codice
+   e l'output prende l'altezza che resta, con il tipo del codice invece di quello delle
+   didascalie. Se non ci sta, scorre (e pdb-verify lo segnala). */
+.at-frame.result .at-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.at-frame.result .at-content > h1 {
+  margin-bottom: var(--space-5);
+}
+
+.at-frame.result .slidev-monaco-container {
+  min-height: 0;
+}
+
+.at-frame.result .slidev-monaco-container + .slidev-monaco-container {
+  margin-top: var(--space-5);
+}
+
+.at-frame.result .slidev-monaco-container-inner {
+  display: none;
+}
+
+.at-frame.result .slidev-monaco-container > div:has(> .slidev-icon-btn) {
+  order: 1;
+}
+
+.slidev-layout.at-frame.result .slidev-monaco-container > div:has(> .slidev-icon-btn)::before {
+  content: 'Il codice della slide precedente';
+}
+
+html[data-pdb-python='loading'] .slidev-layout.at-frame.result .slidev-monaco-container > div:has(> .slidev-icon-btn)::before {
+  content: 'Il codice della slide precedente · avvio di Pyodide…';
+}
+
+.at-frame.result .slidev-monaco-container .slidev-icon-btn::after {
+  content: 'Esegui di nuovo';
+}
+
+.at-frame.result .slidev-monaco-container > [data-waitfor]:has(.slidev-runner-output),
+.at-frame.result .slidev-runner-output,
+.at-frame.result .slidev-runner-output > div {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.slidev-layout.at-frame.result .at-output {
+  min-height: 0;
+  max-height: none;
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--type-code-size);
+  line-height: var(--type-code-line);
+}
