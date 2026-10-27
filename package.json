@@ -1,21 +1,43 @@
 {
   "name": "slidev-theme-python-doesnt-byte",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Tema Slidev per le slide delle lezioni di Python Doesn't Byte",
   "author": "Marco Farina",
   "license": "MIT",
   "type": "module",
   "keywords": [
     "slidev-theme",
-    "slidev"
+    "slidev",
+    "python",
+    "didattica"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/marcofarina/slidev-theme-python-doesnt-byte.git"
   },
+  "homepage": "https://github.com/marcofarina/slidev-theme-python-doesnt-byte#readme",
+  "bugs": {
+    "url": "https://github.com/marcofarina/slidev-theme-python-doesnt-byte/issues"
+  },
   "engines": {
     "node": ">=20.12.0"
   },
+  "files": [
+    "assets",
+    "bin",
+    "components",
+    "composables",
+    "fonts",
+    "layouts",
+    "plugins",
+    "setup",
+    "styles",
+    "tokens",
+    "vite.config.ts",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
   "bin": {
     "pdb-copy-pyodide": "bin/copy-pyodide.mjs",
     "pdb-check": "bin/check.mjs",
