@@ -306,7 +306,3 @@ npm run contrast     # controlla il contrasto di ogni coppia testo/fondo
 | Logo e icone dei callout (`assets/`) | CC BY-NC-SA 4.0, come il libro: vietato l’uso commerciale |
 | Pyodide, copiato nel deck da `pdb-copy-pyodide` | MPL-2.0 |
 | sql.js, copiato nel deck da `pdb-copy-sqljs` | MIT |
-
-## Fonte del design
-
-Il design vive nell’artifact **Atmospheric**: <https://claude.ai/artifact/EyTZZecL6BQVkgJN3efdHj>. Se l’artifact e questo tema divergono, vale l’artifact.
